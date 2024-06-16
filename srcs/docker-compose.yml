@@ -1,0 +1,24 @@
+services:
+  mariadb:
+    build:
+      context: ./requirements/mariadb
+    container_name: mariadb
+    volumes:
+      - mariadb:/var/lib/mysql
+    env_file:
+      - ../secrets/.env
+    networks:
+      - inception
+    restart: always
+
+volumes:
+  mariadb:
+    name: mariadb
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/jdagoy/data/mariadb
+
+networks:
+  inception:
+    name: inception

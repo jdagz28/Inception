@@ -14,12 +14,12 @@ RUN openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout \
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
 
 # Create the WordPress directory
-RUN mkdir -p /var/www/WordPress
+RUN mkdir -p /var/www/wordpress
 
-# Change the owner of the Wordpress directory to www-data
+# Change the owner of the WordPress directory to www-data
 RUN chown -R www-data:www-data /var/www/wordpress
 
 ENTRYPOINT [ "./nginx-conf.sh" ]
 
-# Define the command to run when the container starts
+# Define the command to run when the container starts 
 CMD ["nginx", "-g", "daemon off;"]

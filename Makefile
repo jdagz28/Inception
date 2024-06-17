@@ -6,24 +6,17 @@
 #    By: jdagoy <jdagoy@student.s19.be>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/29 01:19:02 by jdagoy            #+#    #+#              #
-#    Updated: 2024/06/17 17:52:02 by jdagoy           ###   ########.fr        #
+#    Updated: 2024/06/17 21:14:17 by jdagoy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
-
 
 SRCS_DIR    := ./srcs/
 WP_DIR      := /home/jdagoy/data/wordpress/
 DB_DIR      := /home/jdagoy/data/mariadb/
 
-
 COMPOSE_FILE := $(SRCS_DIR)docker-compose.yml
 
-all: linux #up
-
-linux: 
-	sudo mkdir -p $(WP_DIR)
-	sudo mkdir -p $(DB_DIR)
-	@docker compose -f $(COMPOSE_FILE) up --build
+all: up
 
 up: 
 	@mkdir -p $(WP_DIR)
@@ -71,8 +64,8 @@ remove-networks:
 	@docker network ls --format '{{.Name}}' | \
 		grep -vE '^(bridge|host|none|system)' | \
 		xargs -r docker network rm
-		
-# Helper function to check if there are volumes to prune
+
+# Helper function to prune volumes
 prune-volumes:
 	@docker volume prune -f
 

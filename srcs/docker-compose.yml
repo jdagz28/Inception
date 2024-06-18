@@ -1,32 +1,26 @@
-services:
+volumes:
   mariadb:
-    container_name: mariadb
-    build:
-      context: ./requirements/mariadb
-    volumes:
-      - mariadb:/var/lib/mysql
-    env_file:
-      - ../secrets/.env
-    networks:
-      - inception
-    restart: always
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/jdagoy/data/mariadb
+      o: bind
   wordpress:
-    container_name: wordpress
-    build:
-      context: ./requirements/wordpress
-    depends_on:
-      - mariadb
-    volumes:
-      - wordpress:/var/www/wordpress
-    env_file:
-      - ../secrets/.env
-    networks:
-      - inception
-    restart: always
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/jdagoy/data/wordpress
+      o: bind
+
+networks:
+  inception:
+    driver: bridge
+
+services:
   nginx:
     container_name: nginx
-    build:
-      context: ./requirements/nginx
+    build: ./requirements/nginx
+    image: nginx:jdagoy
     depends_on:
       - wordpress
     volumes:
@@ -36,21 +30,29 @@ services:
     networks:
       - inception
     restart: always
-
-volumes:
-  mariadb:
-    name: mariadb
-    driver: local
-    driver_opts:
-      type: none
-      device: /home/jdagoy/data/mariadb
+  
   wordpress:
-    name: wordpress
-    driver: local
-    driver_opts:
-      type: none
-      device: /home/jdagoy/data/wordpress
-
-networks:
-  inception:
-    name: inception
+    container_name: wordpress
+    build: ./requirements/wordpress
+    image: wordpress:jdagoy
+    depends_on:
+      - mariadb
+    volumes:
+      - wordpress:/var/www/wordpress
+    env_file:
+      - ../secrets/.env
+    networks:
+      - inception
+    restart: always
+  
+  mariadb:
+    container_name: mariadb
+    build: ./requirements/mariadb
+    image: mariadb:jdagoy
+    volumes:
+      - mariadb:/var/lib/mysql
+    env_file:
+      - ../secrets/.env
+    networks:
+      - inception
+    restart: always

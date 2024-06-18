@@ -6,7 +6,7 @@
 #    By: jdagoy <jdagoy@student.s19.be>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/29 01:19:02 by jdagoy            #+#    #+#              #
-#    Updated: 2024/06/17 21:14:17 by jdagoy           ###   ########.fr        #
+#    Updated: 2024/06/18 11:52:28 by jdagoy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,14 @@ DB_DIR      := /home/jdagoy/data/mariadb/
 
 COMPOSE_FILE := $(SRCS_DIR)docker-compose.yml
 
-all: up
+all: home #up
+
+home:
+	sudo mkdir -p $(WP_DIR)
+	sudo mkdir -p $(DB_DIR)
+	sudo chown -R $(USER):$(USER) /home/jdagoy/data/mariadb/
+	sudo chmod -R 755 /home/jdagoy/data/mariadb/
+	@docker compose -f $(COMPOSE_FILE) up --build
 
 up: 
 	@mkdir -p $(WP_DIR)
@@ -69,7 +76,7 @@ remove-networks:
 prune-volumes:
 	@docker volume prune -f
 
-cleanux: down stop-containers remove-containers remove-images remove-networks
+cleanhome: down stop-containers remove-containers remove-images remove-networks
 	@docker system prune -a --volumes
 	@$(call prune-volumes)
 	sudo rm -rf $(WP_DIR)
@@ -83,4 +90,4 @@ clean: down stop-containers remove-containers remove-images remove-networks
 
 re: clean all
 
-.PHONY: all up down start stop accessnginx accessmariadb accesswordpress cleanux clean re
+.PHONY: all up down start stop accessnginx accessmariadb accesswordpress clean home cleanhome re

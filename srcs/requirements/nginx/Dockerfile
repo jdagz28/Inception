@@ -1,7 +1,7 @@
 FROM debian:bullseye
 
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y nginx openssl
+RUN apt-get install -y nginx openssl wget
 
 RUN mkdir -p /etc/nginx/ssl
 
@@ -10,10 +10,11 @@ RUN openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/ngin
 
 # Copy the nginx configuration file
 COPY ./conf/nginx.conf /etc/nginx/nginx.conf
+COPY ./conf/nginx-start.sh /nginx-start.sh
 
 # Create the WordPress directory
 RUN mkdir -p /var/www/wordpress
 RUN chown -R www-data:www-data /var/www/wordpress
 
-ENTRYPOINT ["./nginx-conf.sh"]
+ENTRYPOINT ["./nginx-start.sh"]
 CMD ["nginx", "-g", "daemon off;"]

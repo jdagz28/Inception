@@ -28,7 +28,7 @@ home:
 up: 
 	@mkdir -p $(WP_DIR)
 	@mkdir -p $(DB_DIR)
-	@docker compose -f $(COMPOSE_FILE) up --build
+	@docker compose -f $(COMPOSE_FILE) up 
 
 down:
 	@docker compose -f $(COMPOSE_FILE) down
@@ -40,13 +40,13 @@ stop:
 	@docker compose -f $(COMPOSE_FILE) stop
 
 accessnginx:
-	@docker exec -it nginx /bin/bash
+	@docker exec -it nginx /bin/zsh
 
 accessmariadb:
-	@docker exec -it mariadb /bin/bash
+	@docker exec -it mariadb /bin/zsh
 
 accesswordpress:
-	@docker exec -it wordpress /bin/bash
+	@docker exec -it wordpress /bin/zsh
 
 # Helper function to check if there are containers to stop
 stop-containers:

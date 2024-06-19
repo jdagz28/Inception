@@ -2,6 +2,7 @@
 
 # Start MariaDB service
 service mariadb start
+sleep 5
 
 # Create database if it does not exist
 mariadb -e "CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\`;"

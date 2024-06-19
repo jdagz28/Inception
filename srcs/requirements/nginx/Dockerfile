@@ -1,7 +1,7 @@
 FROM debian:bullseye
 
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y nginx openssl wget
+RUN apt-get install -y nginx openssl wget zsh neofetch git
 
 RUN mkdir -p /etc/nginx/ssl
 
@@ -12,6 +12,16 @@ COPY ./conf/nginx-start.sh /nginx-start.sh
 # Create the WordPress directory
 RUN mkdir -p /var/www/wordpress
 RUN chown -R www-data:www-data /var/www/wordpress
+
+# Generate the SSL certificate
+# RUN openssl req -x509 -nodes -out /etc/nginx/ssl/inception.crt -keyout /etc/nginx/ssl/inception.key -subj "/C=MO/ST=KH/L=KH/O=42/OU=42/CN=jdagoy.42.fr/UID=jdagoy"
+
+RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.oh-my-zsh/custom/themes/powerlevel10k
+RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+
+COPY ./conf/.zshrc /root/.
+
+RUN chsh -s /bin/zsh
 
 ENTRYPOINT ["./nginx-start.sh"]
 CMD ["nginx", "-g", "daemon off;"]

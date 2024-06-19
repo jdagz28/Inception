@@ -57,8 +57,9 @@ main() {
         wp core config --dbhost=mariadb:3306 --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_PASSWORD" --allow-root
         wp core install --url="$DOMAIN_NAME" --title="jdagoy's Website" --admin_user="$WP_ADMIN_NAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="$WP_ADMIN_EMAIL" --allow-root
         wp user create "$WP_USER_NAME" "$WP_USER_EMAIL" --user_pass="$WP_USER_PASSWORD" --role="$WP_USER_ROLE" --allow-root
-        wp plugin install redis-cache --activate --allow-root
-        wp plugin update --all --allow-root
+        # wp theme install ./WP_THEME/cvio.zip --path=/var/www/wordpress/ --activate --allow-root
+        # wp plugin install ./WP_THEME/cvio-plugins.zip --path=/var/www/wordpress/ --activate --allow-root
+        # wp theme activate ./WP_THEME/cvio-child.zip --path=/var/www/wordpress/ --activate --allow-root
     else
         echo "WordPress already set up; skipping installation"
     fi

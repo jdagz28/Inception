@@ -1,11 +1,5 @@
 #!/bin/bash
 
-# Install ZSH
-chsh -s $(which zsh)
-wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
-echo "alias zshi='sh /install.sh'" >> ~/.zshrc
-
-
 # Colors for output
 GREEN='\033[0;32m'
 RED='\033[0;31m'
@@ -63,6 +57,8 @@ main() {
         wp core config --dbhost=mariadb:3306 --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_PASSWORD" --allow-root
         wp core install --url="$DOMAIN_NAME" --title="jdagoy's Website" --admin_user="$WP_ADMIN_NAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="$WP_ADMIN_EMAIL" --allow-root
         wp user create "$WP_USER_NAME" "$WP_USER_EMAIL" --user_pass="$WP_USER_PASSWORD" --role="$WP_USER_ROLE" --allow-root
+        wp plugin install redis-cache --activate --allow-root
+        wp plugin update --all --allow-root
     else
         echo "WordPress already set up; skipping installation"
     fi

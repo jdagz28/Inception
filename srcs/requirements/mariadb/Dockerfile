@@ -6,9 +6,7 @@ RUN apt-get install -y mariadb-server wget zsh neofetch git
 COPY ./conf/mariadb-conf.sh /mariadb-conf.sh
 RUN chmod +x /mariadb-conf.sh
 
-
-RUN git clone --depth=1 https://github.com/romkatv/powerlevel10k.git /root/.oh-my-zsh/custom/themes/powerlevel10k
-RUN sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+RUN wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
 
 COPY ./conf/.zshrc /root/.
 

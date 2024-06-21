@@ -1,5 +1,7 @@
 #!/bin/bash
 
+WP_PATH="/var/www/wordpress"
+
 # Colors for output
 GREEN='\033[0;32m'
 RED='\033[0;31m'
@@ -52,17 +54,30 @@ main() {
     # Check if WordPress core files are installed
     if ! wp core is-installed --allow-root > /dev/null; then
         echo "Installing and setting up WordPress"
+        
         find /var/www/wordpress/ -mindepth 1 -delete
+
         wp core download --allow-root
-        wp core config --dbhost=mariadb:3306 --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_PASSWORD" --allow-root
-        wp core install --url="$DOMAIN_NAME" --title="jdagoy's Website" --admin_user="$WP_ADMIN_NAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="$WP_ADMIN_EMAIL" --allow-root
+        wp core config --path="$WP_PATH" --dbhost=mariadb:3306 --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_PASSWORD" --allow-root
+        wp core install --path="$WP_PATH" --url="$DOMAIN_NAME" --title="jdagoy's Website" --admin_user="$WP_ADMIN_NAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="$WP_ADMIN_EMAIL" --allow-root
         wp user create "$WP_USER_NAME" "$WP_USER_EMAIL" --user_pass="$WP_USER_PASSWORD" --role="$WP_USER_ROLE" --allow-root
-        # wp theme install ./WP_THEME/cvio.zip --path=/var/www/wordpress/ --activate --allow-root
-        # wp plugin install ./WP_THEME/cvio-plugins.zip --path=/var/www/wordpress/ --activate --allow-root
-        # wp theme activate ./WP_THEME/cvio-child.zip --path=/var/www/wordpress/ --activate --allow-root
+        echo "define('FS_METHOD', 'direct');" >> "$WP_PATH/wp-config.php"
+        echo "define( 'WP_MEMORY_LIMIT', '256M' );" >> "$WP_PATH/wp-config.php"
+        wp theme install inspiro --activate --path="$WP_PATH" --allow-root
+        chown -R www-data:www-data /var/www/wordpress
+        wp plugin install one-click-demo-import wpzoom-portfolio instagram-widget-by-wpzoom social-icons-widget-by-wpzoom --activate --allow-root
+        cd /var/www/wordpress/
+        wp ocdi import --predefined=0 --allow-root
+        cd /
+        ./create_post.sh
+        chown -R www-data:www-data /var/www/wordpress
+        wp media regenerate --path="$WP_PATH" --allow-root 
+
     else
         echo "WordPress already set up; skipping installation"
     fi
+
+
 
     # Update PHP-FPM configuration and start PHP-FPM
     sed -i '36 s@/run/php/php7.4-fpm.sock@9000@' /etc/php/7.4/fpm/pool.d/www.conf

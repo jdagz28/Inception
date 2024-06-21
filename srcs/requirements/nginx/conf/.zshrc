@@ -14,11 +14,4 @@ echo "│              ░░░░░░                                 │";
 echo "│                                                     │";
 echo "└─────────────────────────────────────────────────────┘";
 
-# Path to the Oh My Zsh installation
-export ZSH="/root/.oh-my-zsh"
-
-# Set the theme to Powerlevel10k
-ZSH_THEME="powerlevel10k/powerlevel10k"
-
-# Load Oh My Zsh
-source $ZSH/oh-my-zsh.sh
+alias zshi='sh /install.sh'

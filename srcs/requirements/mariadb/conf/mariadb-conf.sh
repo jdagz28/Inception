@@ -22,3 +22,4 @@ mysqladmin -u root -p"$MYSQL_PASSWORD" shutdown
 # Start MariaDB in a safe mode with specific configurations
 mysqld_safe --port=3306 --bind-address=0.0.0.0 --datadir='/var/lib/mysql' 
 
+

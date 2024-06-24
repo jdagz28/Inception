@@ -23,30 +23,33 @@ home:
 	sudo mkdir -p $(DB_DIR)
 	sudo chown -R $(USER):$(USER) /home/jdagoy/data/mariadb/
 	sudo chmod -R 755 /home/jdagoy/data/mariadb/
-	@docker compose -f $(COMPOSE_FILE) up --build
+	@docker compose -f $(COMPOSE_FILE) up -d
 
-up: 
+up:
 	@mkdir -p $(WP_DIR)
 	@mkdir -p $(DB_DIR)
-	@docker compose -f $(COMPOSE_FILE) up 
+	@docker compose -f $(COMPOSE_FILE) up -d
 
 down:
 	@docker compose -f $(COMPOSE_FILE) down
 
-start:
+start: up
 	@docker compose -f $(COMPOSE_FILE) start
 
 stop:
 	@docker compose -f $(COMPOSE_FILE) stop
 
+build:
+	@docker compose -f $(COMPOSE_FILE) build
+
 accessnginx:
-	@docker exec -it nginx /bin/zsh
+	@docker exec -it nginx zsh
 
 accessmariadb:
-	@docker exec -it mariadb /bin/zsh
+	@docker exec -it mariadb zsh
 
 accesswordpress:
-	@docker exec -it wordpress /bin/zsh
+	@docker exec -it wordpress zsh
 
 # Helper function to check if there are containers to stop
 stop-containers:
@@ -72,22 +75,17 @@ remove-networks:
 		grep -vE '^(bridge|host|none|system)' | \
 		xargs -r docker network rm
 
-# Helper function to prune volumes
-prune-volumes:
-	@docker volume prune -f
-
 cleanhome: down stop-containers remove-containers remove-images remove-networks
-	@docker system prune -a --volumes
-	@$(call prune-volumes)
-	sudo rm -rf $(WP_DIR)
-	sudo rm -rf $(DB_DIR)
+	@sudo rm -rf $(WP_DIR)
+	@sudo rm -rf $(DB_DIR)
 
 clean: down stop-containers remove-containers remove-images remove-networks
-	@docker system prune -a --volumes
-	@$(call prune-volumes)
 	@rm -rf $(WP_DIR)
 	@rm -rf $(DB_DIR)
 
-re: clean all
+prune: clean
+	@docker system prune -a --volumes
 
-.PHONY: all up down start stop accessnginx accessmariadb accesswordpress clean home cleanhome re
+re: cleanhome all
+
+.PHONY: all up down start stop build accessnginx accessmariadb accesswordpress clean cleanhome prune home re

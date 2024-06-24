@@ -63,16 +63,14 @@ main() {
         wp user create "$WP_USER_NAME" "$WP_USER_EMAIL" --user_pass="$WP_USER_PASSWORD" --role="$WP_USER_ROLE" --allow-root
         echo "define('FS_METHOD', 'direct');" >> "$WP_PATH/wp-config.php"
         echo "define( 'WP_MEMORY_LIMIT', '256M' );" >> "$WP_PATH/wp-config.php"
-        wp theme install inspiro --activate --path="$WP_PATH" --allow-root
-        chown -R www-data:www-data /var/www/wordpress
-        wp plugin install one-click-demo-import wpzoom-portfolio instagram-widget-by-wpzoom social-icons-widget-by-wpzoom --activate --allow-root
-        cd /var/www/wordpress/
-        wp ocdi import --predefined=0 --allow-root
+        # wp theme install inspiro --activate --path="$WP_PATH" --allow-root
+        # chown -R www-data:www-data /var/www/wordpress
+        # wp plugin install one-click-demo-import wpzoom-portfolio instagram-widget-by-wpzoom social-icons-widget-by-wpzoom --activate --allow-root
+        # cd /var/www/wordpress/
+        # wp ocdi import --predefined=0 --allow-root
         cd /
         ./create_post.sh
-        chown -R www-data:www-data /var/www/wordpress
-        wp media regenerate --path="$WP_PATH" --allow-root 
-
+        # chown -R www-data:www-data /var/www/wordpress
     else
         echo "WordPress already set up; skipping installation"
     fi

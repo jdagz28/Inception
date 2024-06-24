@@ -8,10 +8,10 @@ COPY /conf/create_post.sh /
 RUN chmod +x /create_post.sh
 RUN chmod +x /wp_conf.sh
 
-RUN wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh
+RUN sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 
-COPY ./conf/.zshrc /root/.
-
-RUN chsh -s /bin/zsh
+COPY ./conf/zshrc.sh /root/.
+RUN chmod +x /root/zshrc.sh
+RUN /root/zshrc.sh
 
 ENTRYPOINT ["./wp_conf.sh"]

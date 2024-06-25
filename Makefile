@@ -6,7 +6,7 @@
 #    By: jdagoy <jdagoy@student.s19.be>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/29 01:19:02 by jdagoy            #+#    #+#              #
-#    Updated: 2024/06/25 10:35:12 by jdagoy           ###   ########.fr        #
+#    Updated: 2024/06/25 14:20:19 by jdagoy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,6 +79,10 @@ bonus-build:
 
 accessredis:
 	@docker exec -it redis zsh
+
+accessftp:
+	@docker exec -it ftp zsh
+
 
 # Helper function to check if there are containers to stop
 stop-containers:

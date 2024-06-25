@@ -84,5 +84,23 @@ services:
     restart: always
     profiles:
       - bonus
-
-      
+  
+  ftp:
+    container_name: ftp
+    build: ./requirements/ftp_bonus
+    image: ftp:jdagoy
+    depends_on:
+      - wordpress
+    volumes:
+      - wordpress:/home/jdagoy/ftp/files
+    env_file:
+      - ../secrets/.env
+    ports:
+      - "21:21"
+      - "20:20"
+      - "40000-40005:40000-40005"  # Passive FTP port range
+    networks:
+      - inception
+    restart: always
+    profiles:
+      - bonus

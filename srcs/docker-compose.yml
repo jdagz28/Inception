@@ -30,6 +30,9 @@ services:
     networks:
       - inception
     restart: always
+    profiles:
+      - mandatory
+      - bonus
   
   wordpress:
     container_name: wordpress
@@ -44,6 +47,9 @@ services:
     networks:
       - inception
     restart: always
+    profiles:
+      - mandatory
+      - bonus
   
   mariadb:
     container_name: mariadb
@@ -56,8 +62,27 @@ services:
     networks:
       - inception
     restart: always
+    profiles:
+      - mandatory
+      - bonus
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping -h localhost || exit 1"]
       interval: 10s
       timeout: 5s
       retries: 5
+
+  redis:
+    container_name: redis
+    build: ./requirements/redis_bonus
+    image: redis:jdagoy
+    volumes:
+      - wordpress:/var/www/wordpress
+    depends_on:
+      - wordpress
+    networks:
+      - inception
+    restart: always
+    profiles:
+      - bonus
+
+      

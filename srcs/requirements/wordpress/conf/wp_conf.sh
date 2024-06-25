@@ -63,6 +63,9 @@ main() {
         wp user create "$WP_USER_NAME" "$WP_USER_EMAIL" --user_pass="$WP_USER_PASSWORD" --role="$WP_USER_ROLE" --allow-root
         echo "define('FS_METHOD', 'direct');" >> "$WP_PATH/wp-config.php"
         echo "define( 'WP_MEMORY_LIMIT', '256M' );" >> "$WP_PATH/wp-config.php"
+        wp plugin install redis-cache --activate --allow-root
+        wp plugin update --all --allow-root
+        wp redis enable --allow-root
         # wp theme install inspiro --activate --path="$WP_PATH" --allow-root
         # chown -R www-data:www-data /var/www/wordpress
         # wp plugin install one-click-demo-import wpzoom-portfolio instagram-widget-by-wpzoom social-icons-widget-by-wpzoom --activate --allow-root

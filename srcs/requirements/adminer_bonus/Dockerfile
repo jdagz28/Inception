@@ -1,10 +1,11 @@
 FROM debian:bullseye
 
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y vsftpd wget zsh neofetch git
+RUN apt-get install -y wget zsh neofetch git php php-mysql  -y
 
-COPY ./conf/ftp_conf.sh /
-RUN chmod +x /ftp_conf.sh
+
+COPY ./conf/adminer_conf.sh /
+RUN chmod +x /adminer_conf.sh
 
 RUN sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh -O -)"
 
@@ -12,4 +13,4 @@ COPY ./conf/zshrc.sh /root/.
 RUN chmod +x /root/zshrc.sh
 RUN /root/zshrc.sh
 
-CMD ["/ftp_conf.sh"]
+CMD ["/adminer_conf.sh"]

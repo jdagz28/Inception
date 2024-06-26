@@ -104,3 +104,17 @@ services:
     restart: always
     profiles:
       - bonus
+
+  adminer:
+    container_name: adminer
+    build: ./requirements/adminer_bonus
+    image: adminer:jdagoy
+    depends_on:
+      - wordpress
+    ports:
+      - "42:80"
+    networks:
+      - inception
+    restart: always
+    profiles:
+      - bonus

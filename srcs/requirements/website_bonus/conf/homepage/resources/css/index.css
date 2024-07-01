@@ -1,0 +1,30 @@
+.typing-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.typing-container p {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 5rem;
+    color: white;
+    padding: 0.5rem;
+    font-weight: normal;
+    letter-spacing: 0.1rem;
+    text-align: center;
+    overflow: hidden;
+}
+.typing-container p span.typed-text {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: normal;
+    color: white;
+}
+.typing-container p span.cursor {
+    display: inline-block;
+    background-color: white;
+    margin-left: 0.1rem;
+    width: 3px;
+    animation: blink 1s infinite;
+}
+.typing-container p span.cursor.typing {
+    animation: none;
+}

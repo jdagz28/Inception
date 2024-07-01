@@ -1,0 +1,22 @@
+.about-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: calc(100vh - 65px);
+    position: relative;
+    flex-direction: column;
+    text-align: center;
+}
+.about-text {
+    font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    font-size: 1.7rem;
+    color: white;
+    text-align: justify;
+    max-width: 800px;
+    margin: 0 auto;
+    font-weight: lighter;
+}
+img.rounded {
+    margin-top: 50px;
+    margin-bottom: 20px;
+}

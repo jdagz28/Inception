@@ -6,7 +6,7 @@
 #    By: jdagoy <jdagoy@student.s19.be>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/29 01:19:02 by jdagoy            #+#    #+#              #
-#    Updated: 2024/06/25 14:20:19 by jdagoy           ###   ########.fr        #
+#    Updated: 2024/07/01 13:54:10 by jdagoy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@
 SRCS_DIR    := ./srcs/
 WP_DIR      := /home/jdagoy/data/wordpress/
 DB_DIR      := /home/jdagoy/data/mariadb/
+WEB_DIR		:= /home/jdagoy/data/homepage/
 
 COMPOSE_FILE := $(SRCS_DIR)docker-compose.yml
 
@@ -22,6 +23,7 @@ all: home #up
 home:
 	sudo mkdir -p $(WP_DIR)
 	sudo mkdir -p $(DB_DIR)
+	sudo mkdir -p $(WEB_DIR)
 	sudo chown -R $(USER):$(USER) /home/jdagoy/data/mariadb/
 	sudo chmod -R 755 /home/jdagoy/data/mariadb/
 	@docker compose -f $(COMPOSE_FILE) --profile mandatory up -d
@@ -29,6 +31,7 @@ home:
 up:
 	@mkdir -p $(WP_DIR)
 	@mkdir -p $(DB_DIR)
+	@mkdir -p $(WEB_DIR)
 	@docker compose -f $(COMPOSE_FILE) --profile mandatory up -d
 
 down:
@@ -55,6 +58,7 @@ accesswordpress:
 bonus-home:
 	sudo mkdir -p $(WP_DIR)
 	sudo mkdir -p $(DB_DIR)
+	sudo mkdir -p $(WEB_DIR)
 	sudo chown -R $(USER):$(USER) /home/jdagoy/data/mariadb/
 	sudo chmod -R 755 /home/jdagoy/data/mariadb/
 	@docker compose -f $(COMPOSE_FILE) --profile bonus up -d
@@ -63,6 +67,7 @@ bonus-home:
 bonus-up:
 	@mkdir -p $(WP_DIR)
 	@mkdir -p $(DB_DIR)
+	@mkdir -p $(WEB_DIR)
 	@docker compose -f $(COMPOSE_FILE) --profile bonus up -d
 
 bonus-down:
@@ -111,10 +116,12 @@ remove-networks:
 cleanhome: down stop-containers remove-containers remove-images remove-networks
 	@sudo rm -rf $(WP_DIR)
 	@sudo rm -rf $(DB_DIR)
+	@sudo rm -rf $(WEB_DIR)
 
 clean: down stop-containers remove-containers remove-images remove-networks
 	@rm -rf $(WP_DIR)
 	@rm -rf $(DB_DIR)
+	@rm -rf $(WEB_DIR)
 
 prune: clean
 	@docker system prune -a --volumes

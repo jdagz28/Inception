@@ -1,0 +1,20 @@
+.dataviz-header {
+    font: 300 34px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    color: rgb(255, 255, 255);
+    text-align: center;
+    margin-top: 80px;
+}
+.dataviz-container {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    flex-wrap: wrap;
+    padding: 20px;
+}
+.scaled-image {
+    width: 700px;
+    height: auto;
+    object-fit: contain;
+}

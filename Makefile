@@ -6,7 +6,7 @@
 #    By: jdagoy <jdagoy@student.s19.be>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/29 01:19:02 by jdagoy            #+#    #+#              #
-#    Updated: 2024/07/01 13:54:10 by jdagoy           ###   ########.fr        #
+#    Updated: 2024/07/02 10:31:19 by jdagoy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -88,6 +88,11 @@ accessredis:
 accessftp:
 	@docker exec -it ftp zsh
 
+accessadminer:
+	@docker exec -it adminer zsh
+
+accesswebsite:
+	@docker exec -it website zsh
 
 # Helper function to check if there are containers to stop
 stop-containers:

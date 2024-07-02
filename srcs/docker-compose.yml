@@ -29,7 +29,6 @@ services:
     image: nginx:jdagoy
     depends_on:
       - wordpress
-      - website
     volumes:
       - wordpress:/var/www/wordpress
       - homepage:/var/www/homepage
@@ -79,42 +78,8 @@ services:
       timeout: 5s
       retries: 5
 
-  redis:
-    container_name: redis
-    build: ./requirements/redis_bonus
-    image: redis:jdagoy
-    volumes:
-      - wordpress:/var/www/wordpress
-    depends_on:
-      - wordpress
-    networks:
-      - inception
-    restart: always
-    profiles:
-      - bonus
-  
-  ftp:
-    container_name: ftp
-    build: ./requirements/ftp_bonus
-    image: ftp:jdagoy
-    depends_on:
-      - wordpress
-    volumes:
-      - wordpress:/home/jdagoy/ftp/files
-    env_file:
-      - ../secrets/.env
-    ports:
-      - "21:21"
-      - "20:20"
-      - "40000-40005:40000-40005"  # Passive FTP port range
-    networks:
-      - inception
-    restart: always
-    profiles:
-      - bonus
-
   website:
-    container_name:  website
+    container_name: website
     build: ./requirements/website_bonus
     image: website:jdagoy
     volumes:

@@ -6,7 +6,7 @@
 #    By: jdagoy <jdagoy@student.s19.be>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/29 01:19:02 by jdagoy            #+#    #+#              #
-#    Updated: 2024/07/02 10:31:19 by jdagoy           ###   ########.fr        #
+#    Updated: 2024/07/02 14:24:07 by jdagoy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,7 @@ SRCS_DIR    := ./srcs/
 WP_DIR      := /home/jdagoy/data/wordpress/
 DB_DIR      := /home/jdagoy/data/mariadb/
 WEB_DIR		:= /home/jdagoy/data/homepage/
+PROM_DIR	:= /home/jdagoy/data/prometheus/
 
 COMPOSE_FILE := $(SRCS_DIR)docker-compose.yml
 
@@ -24,6 +25,7 @@ home:
 	sudo mkdir -p $(WP_DIR)
 	sudo mkdir -p $(DB_DIR)
 	sudo mkdir -p $(WEB_DIR)
+	sudo mkdir -p $(PROM_DIR)
 	sudo chown -R $(USER):$(USER) /home/jdagoy/data/mariadb/
 	sudo chmod -R 755 /home/jdagoy/data/mariadb/
 	@docker compose -f $(COMPOSE_FILE) --profile mandatory up -d
@@ -32,6 +34,7 @@ up:
 	@mkdir -p $(WP_DIR)
 	@mkdir -p $(DB_DIR)
 	@mkdir -p $(WEB_DIR)
+	@mkdir -p $(PROM_DIR)
 	@docker compose -f $(COMPOSE_FILE) --profile mandatory up -d
 
 down:
@@ -59,6 +62,7 @@ bonus-home:
 	sudo mkdir -p $(WP_DIR)
 	sudo mkdir -p $(DB_DIR)
 	sudo mkdir -p $(WEB_DIR)
+	sudo mkdir -p $(PROM_DIR)
 	sudo chown -R $(USER):$(USER) /home/jdagoy/data/mariadb/
 	sudo chmod -R 755 /home/jdagoy/data/mariadb/
 	@docker compose -f $(COMPOSE_FILE) --profile bonus up -d
@@ -68,6 +72,7 @@ bonus-up:
 	@mkdir -p $(WP_DIR)
 	@mkdir -p $(DB_DIR)
 	@mkdir -p $(WEB_DIR)
+	@mkdir -p $(PROM_DIR)
 	@docker compose -f $(COMPOSE_FILE) --profile bonus up -d
 
 bonus-down:
@@ -93,6 +98,9 @@ accessadminer:
 
 accesswebsite:
 	@docker exec -it website zsh
+
+accessprometheus:
+	@docker exec -it prometheus zsh
 
 # Helper function to check if there are containers to stop
 stop-containers:
@@ -122,11 +130,13 @@ cleanhome: down stop-containers remove-containers remove-images remove-networks
 	@sudo rm -rf $(WP_DIR)
 	@sudo rm -rf $(DB_DIR)
 	@sudo rm -rf $(WEB_DIR)
+	@sudo rm -rf $(PROM_DIR)
 
 clean: down stop-containers remove-containers remove-images remove-networks
 	@rm -rf $(WP_DIR)
 	@rm -rf $(DB_DIR)
 	@rm -rf $(WEB_DIR)
+	@rm -rf $(PROM_DIR)
 
 prune: clean
 	@docker system prune -a --volumes

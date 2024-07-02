@@ -2,7 +2,7 @@
 
 # exec "$@"
 
-# Start Nginx
+# # Start Nginx
 service nginx start
 
 # # Generate the SSL certificate

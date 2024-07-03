@@ -1,7 +1,7 @@
 FROM debian:bullseye
 
 RUN apt-get update && apt-get upgrade -y
-RUN apt-get install -y curl php php7.4-fpm php-mysql php-xml php-imagick mariadb-client wget vim git netcat mycli zsh neofetch 
+RUN apt-get install -y curl php php7.4-fpm php-mysql php-xml php-imagick mariadb-client redis-tools wget vim git netcat mycli zsh neofetch 
 
 COPY /conf/wp_conf.sh /
 COPY /conf/create_post.sh /

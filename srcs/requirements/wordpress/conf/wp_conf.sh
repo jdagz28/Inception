@@ -62,7 +62,13 @@ main() {
         wp core install --path="$WP_PATH" --url="$DOMAIN_NAME" --title="jdagoy's Website" --admin_user="$WP_ADMIN_NAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="$WP_ADMIN_EMAIL" --allow-root
         wp user create "$WP_USER_NAME" "$WP_USER_EMAIL" --user_pass="$WP_USER_PASSWORD" --role="$WP_USER_ROLE" --allow-root
         echo "define('FS_METHOD', 'direct');" >> "$WP_PATH/wp-config.php"
-        echo "define( 'WP_MEMORY_LIMIT', '256M' );" >> "$WP_PATH/wp-config.php"
+        echo "define('WP_MEMORY_LIMIT', '256M');" >> "$WP_PATH/wp-config.php"
+        echo "define('WP_CACHE', true);" >> "$WP_PATH/wp-config.php"
+        echo "define('WP_REDIS_HOST', 'redis');" >> "$WP_PATH/wp-config.php"
+        echo "define('WP_REDIS_PORT', '6379');" >> "$WP_PATH/wp-config.php"
+        echo "define('WP_REDIS_TIMEOUT', 1);" >> "$WP_PATH/wp-config.php"
+        echo "define('WP_REDIS_READ_TIMEOUT', 1);" >> "$WP_PATH/wp-config.php"
+        echo "define('WP_REDIS_DATABASE', 0);" >> "$WP_PATH/wp-config.php"
         wp plugin install redis-cache --activate --allow-root
         wp plugin update --all --allow-root
         wp redis enable --allow-root
@@ -77,8 +83,6 @@ main() {
     else
         echo "WordPress already set up; skipping installation\n"
     fi
-
-
 
     # Update PHP-FPM configuration and start PHP-FPM
     sed -i '36 s@/run/php/php7.4-fpm.sock@9000@' /etc/php/7.4/fpm/pool.d/www.conf

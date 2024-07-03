@@ -33,4 +33,4 @@ create_post() {
 create_post "$POST1_AUTHOR" "$POST1_TITLE" "$POST1_CONTENT"
 create_post "$POST2_AUTHOR" "$POST2_TITLE" "$POST2_CONTENT"
 
-echo "Both posts created successfully!"
+echo "Both posts created successfully!\n"

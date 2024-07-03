@@ -19,15 +19,15 @@ display_loading_bar() {
     local end_time=$1
     while [ $(date +%s) -lt $end_time ]; do
         if check_mariadb; then
-            echo -e "\r${GREEN}MariaDB IS RUNNING${NC}"
+            echo -e "\r${GREEN}MariaDB IS RUNNING${NC}\n"
             return 0
         else
-            echo -ne "\rWaiting for MariaDB ${loading_bar}"
+            echo -ne "\rWaiting for MariaDB ${loading_bar}\n"
             loading_bar="${loading_bar}."
             sleep 1
         fi
     done
-    echo -e "\n${RED}No response from MariaDB${NC}"
+    echo -e "\n${RED}No response from MariaDB${NC}\n"
     return 1
 }
 
@@ -75,7 +75,7 @@ main() {
         ./create_post.sh
         # chown -R www-data:www-data /var/www/wordpress
     else
-        echo "WordPress already set up; skipping installation"
+        echo "WordPress already set up; skipping installation\n"
     fi
 
 

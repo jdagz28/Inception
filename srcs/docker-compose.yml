@@ -115,7 +115,7 @@ services:
     build: ./requirements/prometheus_bonus
     image: prometheus:jdagoy
     volumes:
-      - prometheus_data:/var/lib/prometheus
+      - prometheus_data:/monitor
     env_file:
       - ../secrets/.env
     ports:
@@ -139,6 +139,22 @@ services:
       - inception
     ports:
       - "8080:8080"
+    restart: always
+    profiles:
+      - bonus
+
+  grafana:
+    container_name: grafana
+    build: ./requirements/grafana_bonus
+    image: grafana:jdagoy
+    volumes:
+      - prometheus_data:/monitor
+    networks:
+      - inception
+    ports:
+      - "3000:3000"
+    env_file:
+      - ../secrets/.env
     restart: always
     profiles:
       - bonus

@@ -10,5 +10,3 @@ RUN sh -c "$(wget https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools
 COPY ./conf/zshrc.sh /root/.
 RUN chmod +x /root/zshrc.sh
 RUN /root/zshrc.sh
-
-CMD ["tail", "-f", "/dev/null"]

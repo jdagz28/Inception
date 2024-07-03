@@ -122,7 +122,7 @@ services:
       - "9090:9090"
     networks:
       - inception
-    restart: always
+    restart: unless-stopped
     profiles:
       - bonus
 
@@ -139,7 +139,7 @@ services:
       - inception
     ports:
       - "8080:8080"
-    restart: always
+    restart: unless-stopped
     profiles:
       - bonus
 
@@ -155,6 +155,6 @@ services:
       - "3000:3000"
     env_file:
       - ../secrets/.env
-    restart: always
+    restart: unless-stopped
     profiles:
       - bonus

@@ -97,8 +97,10 @@ services:
     image: adminer:jdagoy
     depends_on:
       - wordpress
+    env_file:
+      - ../secrets/.env
     ports:
-      - "42:80"
+      - "80:80"
     networks:
       - inception
     restart: always

@@ -6,7 +6,7 @@
 #    By: jdagoy <jdagoy@student.s19.be>             +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/29 01:19:02 by jdagoy            #+#    #+#              #
-#    Updated: 2024/07/02 14:24:07 by jdagoy           ###   ########.fr        #
+#    Updated: 2024/07/04 09:54:51 by jdagoy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,6 +101,9 @@ accesswebsite:
 
 accessprometheus:
 	@docker exec -it prometheus zsh
+
+accessgrafana:
+	@docker exec -it grafana zsh
 
 # Helper function to check if there are containers to stop
 stop-containers:

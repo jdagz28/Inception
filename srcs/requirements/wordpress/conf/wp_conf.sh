@@ -61,14 +61,24 @@ main() {
         wp core config --path="$WP_PATH" --dbhost=mariadb:3306 --dbname="$DB_NAME" --dbuser="$DB_USER" --dbpass="$DB_PASSWORD" --allow-root
         wp core install --path="$WP_PATH" --url="$DOMAIN_NAME" --title="jdagoy's Website" --admin_user="$WP_ADMIN_NAME" --admin_password="$WP_ADMIN_PASSWORD" --admin_email="$WP_ADMIN_EMAIL" --allow-root
         wp user create "$WP_USER_NAME" "$WP_USER_EMAIL" --user_pass="$WP_USER_PASSWORD" --role="$WP_USER_ROLE" --allow-root
-        echo "define('FS_METHOD', 'direct');" >> "$WP_PATH/wp-config.php"
-        echo "define('WP_MEMORY_LIMIT', '256M');" >> "$WP_PATH/wp-config.php"
-        echo "define('WP_CACHE', true);" >> "$WP_PATH/wp-config.php"
-        echo "define('WP_REDIS_HOST', 'redis');" >> "$WP_PATH/wp-config.php"
-        echo "define('WP_REDIS_PORT', '6379');" >> "$WP_PATH/wp-config.php"
-        echo "define('WP_REDIS_TIMEOUT', 1);" >> "$WP_PATH/wp-config.php"
-        echo "define('WP_REDIS_READ_TIMEOUT', 1);" >> "$WP_PATH/wp-config.php"
-        echo "define('WP_REDIS_DATABASE', 0);" >> "$WP_PATH/wp-config.php"
+
+        # Verify permissions
+        wp eval 'var_dump(is_writable(WP_CONTENT_DIR));' --allow-root
+
+        # Fix permissions using WP-CLI
+        wp eval 'chmod(WP_CONTENT_DIR, 0755);' --allow-root
+
+        wp config set FS_METHOD direct --allow-root
+        wp config set WP_DEBUG true --raw --allow-root
+        wp config set WP_DEBUG_DISPLAY true --raw --allow-root
+        wp config set WP_DEBUG_LOG true --raw --allow-root
+        wp config set WP_MEMORY_LIMIT 256M --allow-root
+        wp config set WP_CACHE true --raw --allow-root
+        wp config set WP_REDIS_HOST redis --allow-root
+        wp config set WP_REDIS_PORT 6379 --allow-root
+        wp config set WP_REDIS_TIMEOUT 5 --allow-root
+        wp config set WP_REDIS_READ_TIMEOUT 5 --allow-root
+        wp config set WP_REDIS_DATABASE 0 --allow-root
         wp plugin install redis-cache --activate --allow-root
         wp plugin update --all --allow-root
         wp redis enable --allow-root

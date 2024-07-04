@@ -83,10 +83,10 @@ services:
     container_name: redis
     build: ./requirements/redis_bonus
     image: redis:jdagoy
-    volumes:
-      - wordpress:/var/www/wordpress
     depends_on:
       - wordpress
+    volumes:
+      - wordpress:/var/www/wordpress
     networks:
       - inception
     restart: always

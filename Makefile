@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: jdagoy <jdagoy@student.s19.be>             +#+  +:+       +#+         #
+#    By: jdagoy <jdagoy@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2024/05/29 01:19:02 by jdagoy            #+#    #+#              #
-#    Updated: 2024/07/04 09:54:51 by jdagoy           ###   ########.fr        #
+#    Updated: 2024/09/17 12:30:51 by jdagoy           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,22 +19,13 @@ PROM_DIR	:= /home/jdagoy/data/prometheus/
 
 COMPOSE_FILE := $(SRCS_DIR)docker-compose.yml
 
-all: home #up
+all: up
 
-home:
+up:
 	sudo mkdir -p $(WP_DIR)
 	sudo mkdir -p $(DB_DIR)
 	sudo mkdir -p $(WEB_DIR)
 	sudo mkdir -p $(PROM_DIR)
-	sudo chown -R $(USER):$(USER) /home/jdagoy/data/mariadb/
-	sudo chmod -R 755 /home/jdagoy/data/mariadb/
-	@docker compose -f $(COMPOSE_FILE) --profile mandatory up -d
-
-up:
-	@mkdir -p $(WP_DIR)
-	@mkdir -p $(DB_DIR)
-	@mkdir -p $(WEB_DIR)
-	@mkdir -p $(PROM_DIR)
 	@docker compose -f $(COMPOSE_FILE) --profile mandatory up -d
 
 down:
@@ -58,21 +49,13 @@ accessmariadb:
 accesswordpress:
 	@docker exec -it wordpress zsh
 
-bonus-home:
+bonus-up:
 	sudo mkdir -p $(WP_DIR)
 	sudo mkdir -p $(DB_DIR)
 	sudo mkdir -p $(WEB_DIR)
 	sudo mkdir -p $(PROM_DIR)
 	sudo chown -R $(USER):$(USER) /home/jdagoy/data/mariadb/
 	sudo chmod -R 755 /home/jdagoy/data/mariadb/
-	@docker compose -f $(COMPOSE_FILE) --profile bonus up -d
-
-
-bonus-up:
-	@mkdir -p $(WP_DIR)
-	@mkdir -p $(DB_DIR)
-	@mkdir -p $(WEB_DIR)
-	@mkdir -p $(PROM_DIR)
 	@docker compose -f $(COMPOSE_FILE) --profile bonus up -d
 
 bonus-down:
@@ -105,45 +88,35 @@ accessprometheus:
 accessgrafana:
 	@docker exec -it grafana zsh
 
-# Helper function to check if there are containers to stop
 stop-containers:
 	@if [ -n "$$(docker container ls -aq)" ]; then \
 		docker container stop $$(docker container ls -aq); \
 	fi
 
-# Helper function to check if there are containers to remove
 remove-containers:
 	@if [ -n "$$(docker container ls -aq)" ]; then \
 		docker container rm $$(docker container ls -aq); \
 	fi
 
-# Helper function to check if there are images to remove
 remove-images:
 	@if [ -n "$$(docker images -aq)" ]; then \
 		docker rmi -f $$(docker images -aq); \
 	fi
 
-# Helper function to check if there are networks to remove
 remove-networks:
 	@docker network ls --format '{{.Name}}' | \
 		grep -vE '^(bridge|host|none|system)' | \
 		xargs -r docker network rm
 
-cleanhome: down stop-containers remove-containers remove-images remove-networks
+clean: down stop-containers remove-containers remove-images remove-networks
 	@sudo rm -rf $(WP_DIR)
 	@sudo rm -rf $(DB_DIR)
 	@sudo rm -rf $(WEB_DIR)
 	@sudo rm -rf $(PROM_DIR)
-
-clean: down stop-containers remove-containers remove-images remove-networks
-	@rm -rf $(WP_DIR)
-	@rm -rf $(DB_DIR)
-	@rm -rf $(WEB_DIR)
-	@rm -rf $(PROM_DIR)
 
 prune: clean
 	@docker system prune -a --volumes
 
 re: cleanhome all
 
-.PHONY: all up down start stop build accessnginx accessmariadb accesswordpress clean cleanhome prune home re bonus-home bonus-up bonus-down bonus-start bonus-stop bonus-build
+.PHONY: all up down start stop build accessnginx accessmariadb accesswordpress clean prune re bonus-up bonus-down bonus-start bonus-stop bonus-build
